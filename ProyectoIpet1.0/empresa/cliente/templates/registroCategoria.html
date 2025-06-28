@@ -1,0 +1,77 @@
+{% extends "modoAdmin.html" %}
+{% load static %}
+{% block contenido %}
+{% endblock %}
+
+{% block tituloPrincipal %} Registro de Categorias {% endblock %}
+
+{% block mensaje%}
+
+{% if exito %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">  
+        {{exito}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+
+{% if error %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{error}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+
+{% endblock %}
+
+{% block contenidoTabla  %}
+
+
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-8 ml-auto" >
+        <form action="{% url 'guardarCategoria' %}" method="POST" enctype="multipart/form-data" >
+            <div style="overflow-y: auto; height: 65vh; scrollbar-width: none;">
+              {% csrf_token %}
+              <div class="row">
+                      <!-- Nombre Producto -->
+                      <div class="mb-4">
+                        <p>Nombre Categoria: </p>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-marker text-muted" style="width: 15px;"></i></span>
+                            <input type="hidden" name="txtId" value="0{{item.id}}">
+                            <input type="text" name="txtNombre" class="form-control bg-white border-left-0 border-md" required placeholder="Alimentos para mascotas" value="{{item.nombre}}">
+                          </div>
+                      </div>
+                        <!-- Is Active -->
+                        <div class="mb-4">
+                            <p>Activo: </p>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-check text-muted" style="width: 15px;"></i></span>
+                                <select name="txtIsActive" class="form-select custom-select bg-white border-left-0 border-md" required>
+                                    <option value="">- Selecciona una opción -</option>
+                                    <option value="True" {% if item.is_active %}selected{% endif %}>Sí</option>
+                                    <option value="False" {% if not item.is_active %}selected{% endif %}>No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                    
+                     
+                     
+              
+              </div>
+            </div>
+            <div class="row justify-content-end" style="padding-top: 20px;">
+              <div class="col-12 col-md-2 offset-md-3">Opciones</div>
+                  <div class="col-12 col-md-5">
+                      <input type="submit" name="btnGuardar" class="btn btn-danger" value="Guardar">
+                      <a href="{% url 'registroCategoria' %}" class="btn btn-outline-secondary" value="Limpiar">Limpiar</a>
+                      <a href="{% url 'listarCategoria' %}" class="btn btn-success">Listar</a>
+                  </div>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+{% endblock %}

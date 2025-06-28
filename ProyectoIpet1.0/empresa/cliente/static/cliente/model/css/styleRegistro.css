@@ -1,0 +1,134 @@
+.border-md {
+  border-width: 1px;
+}
+
+.btn-facebook {
+  background: #405D9D;
+  border: none;
+  width: 300px;
+}
+
+.btn-facebook:hover, .btn-facebook:focus {
+  background: #314879;
+}
+
+.btn-twitter {
+  background: #42AEEC;
+  border: none;
+  width: 300px;
+
+}
+
+.btn-twitter:hover, .btn-twitter:focus {
+  background: #1799e4;
+}
+
+body {
+  min-height: 100vh;
+}
+
+.form-control:not(select) {
+  padding: 10px;
+}
+
+select.form-control {
+  height: 52px;
+}
+
+.form-control::placeholder {
+  color: #ccc;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+.form-control:focus {
+  box-shadow: none;
+}
+
+
+@import url("https://fonts.googleapis.com/css?family=Raleway:400");
+
+* {
+box-sizing: border-box;
+}
+
+@property --angle {
+syntax: '<angle>';
+initial-value: 90deg;
+inherits: true;
+}
+
+@property --gradX {
+syntax: '<percentage>';
+initial-value: 50%;
+inherits: true;
+}
+
+@property --gradY {
+syntax: '<percentage>';
+initial-value: 0%;
+inherits: true;
+}
+
+
+
+
+:root {
+--d: 2500ms;
+--angle: 90deg;
+--gradX: 100%;
+--gradY: 50%;
+--c1: rgba(168, 239, 255, 1);
+--c2: rgba(168, 239, 255, 0.1);
+}
+
+.wrapper {
+min-width: 10px;
+}
+
+.box {
+border: 0.35rem solid;
+padding:10px;
+border-image: conic-gradient(from var(--angle), var(--c2), var(--c1) 0.1turn, var(--c1) 0.15turn, var(--c2) 0.25turn) 30;
+animation: borderRotate var(--d) linear infinite forwards;
+}
+
+.box:nth-child(2) {
+border-image: radial-gradient(ellipse at var(--gradX) var(--gradY), var(--c1), var(--c1) 10%, var(--c2) 40%) 30;
+animation: borderRadial var(--d) linear infinite forwards;
+}
+
+@keyframes borderRotate {
+100% {
+  --angle: 420deg;
+}
+}
+
+@keyframes borderRadial {
+20% {
+  --gradX: 100%;
+  --gradY: 50%;
+}
+40% {
+  --gradX: 100%;
+  --gradY: 100%;
+}
+60% {
+  --gradX: 50%;
+  --gradY: 100%;
+}
+80% {
+  --gradX: 0%;
+  --gradY: 50%;
+}
+100% {
+  --gradX: 50%;
+  --gradY: 0%;
+}
+}
+
+@media (min-width: 768px) {
+#marginform {
+  padding-top: 120px; /* Ajusta este valor según tus necesidades */
+}
+}
+

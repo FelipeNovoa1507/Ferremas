@@ -1,0 +1,160 @@
+{% extends "modoAdmin.html" %}
+{% load static %}
+{% block contenido %}
+{% endblock %}
+
+{% block tituloPrincipal %} Registro de Productos {% endblock %}
+
+{% block mensaje%}
+
+{% if exito %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">  
+        {{exito}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+
+{% if error %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{error}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+
+{% endblock %}
+
+{% block contenidoTabla  %}
+
+
+<div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-8 ml-auto" >
+        <form action="{% url 'guardarProducto' %}" method="POST" enctype="multipart/form-data" >
+            <div style="overflow-y: auto; height: 65vh; scrollbar-width: none;">
+              {% csrf_token %}
+              <div class="row">
+                      <!-- Nombre Producto -->
+                      <div class="mb-4">
+                        <p>Nombre Producto: </p>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-marker text-muted" style="width: 15px;"></i></span>
+                            <input type="hidden" name="txtId" value="0{{item.id}}">
+                            <input type="text" name="txtNombre" class="form-control bg-white border-left-0 border-md" required placeholder="DestrozaMadres3000" value="{{item.nombre}}">
+                          </div>
+                      </div>
+                    
+                      <!-- Marca Producto -->
+                      <div class="mb-4">
+                        <p>Marca Producto: </p>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-marker text-muted" style="width: 15px;"></i></span>
+                            <select name="txtMarca" class="form-select custom-select bg-white border-left-0 border-md" required>
+                                <option value="">- Selecciona una marca -</option>
+                                {% for marca in marcas %}
+                                    <option value="{{ marca.id }}" {% if item.marca.id == marca.id %}selected{% endif %}>{{ marca.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                      </div>
+
+                    
+                      <!-- Descripcion -->
+                      <div class="mb-4">
+                        <p>Descripcion: </p>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-marker text-muted" style="width: 15px;"></i></span>
+                            <input type="text" name="txtDescripcion" class="form-control bg-white border-left-0 border-md" required placeholder="PeaceKeaper" value="{{item.descripcion}}">
+                        </div>
+                      </div>
+                    
+                      <!-- Precio -->
+                      <div class="mb-4">
+                        <p>Precio: </p>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-marker text-muted" style="width: 15px;"></i></span>
+                            <input type="number" name="txtPrecio" class="form-control bg-white border-left-0 border-md" pattern="\d*" title="Por favor, ingresa solo números." required placeholder="99999" value="{{item.precio|floatformat:'-2'}}">
+                          </div>
+                      </div>
+                      
+                      <!-- Precio Costo -->
+                      <div class="mb-4">
+                        <p>Precio Costo: </p>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-marker text-muted" style="width: 15px;"></i></span>
+                            <input type="number" name="txtPrecioCosto" class="form-control bg-white border-left-0 border-md" pattern="\d*" title="Por favor, ingresa solo números." required placeholder="99999" value="{{item.precio_costo|floatformat:'-2'}}">
+                          </div>
+                      </div>
+                      
+                      <!-- Precio Oferta -->
+                      <div class="mb-4">
+                        <p>Precio Oferta: </p>
+                        <div class="input-group">
+                          <span class="input-group-text"><i class="fas fa-marker text-muted" style="width: 15px;"></i></span>
+                          <input type="number" name="txtPrecioOferta" class="form-control bg-white border-left-0 border-md" pattern="\d*" title="Por favor, ingresa solo números." placeholder="99999" value="{{item.precio_Oferta|default_if_none:''|floatformat:'-2'}}">
+                        </div>
+                      </div>
+                      
+                    
+                      <!-- Stock -->
+                      <div class="mb-4">
+                        <p>Stock: </p>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-marker text-muted" style="width: 15px;"></i></span>
+                            <input type="number" name="txtStock" class="form-control bg-white border-left-0 border-md" pattern="\d*" title="Por favor, ingresa solo números." required placeholder="150" value="{{item.stock}}">
+                          </div>
+                      </div>
+                    
+                    
+                      <!-- Fecha de Nacimiento -->
+                      <div class="mb-4">
+                        <p>Fecha de Elaboración: </p>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa fa-calendar text-muted" style="width: 15px;"></i></span>
+                            <input type="date" name="txtCreado_en" class="form-control bg-white border-left-0 border-md" value="{{item.creado_en|date:'Y-m-d'}}" title="Debe ingresar una fecha válida." required>
+                          </div>
+                      </div>
+
+                      <!-- Categoria -->
+                      <div class="mb-4">
+                        <p>Categoria:</p>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa fa-graduation-cap text-muted" style="width: 15px;"></i></span>
+                            <select name="txtCategoria" class="form-select custom-select bg-white border-left-0 border-md" required>
+                                <option value="">- Selecciona una categoria -</option>
+                                {% for categoria in categorias %}
+                                    <option value="{{ categoria.id }}" {% if item.categoria.id == categoria.id %}selected{% endif %}>{{ categoria.nombre }}</option>
+                                {% endfor %}
+                            </select>                      
+                        </div>
+                      </div>
+                    
+                    
+                      <!-- Imagen Producto -->
+                      <div class="mb-4">
+                        <p>Imagen Producto: </p>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-paperclip text-muted" style="width: 15px;"></i></span>
+                            <input type="file" name="txtImagen" class="form-control bg-white border-left-0 border-md" value="{{item.imagen.url}}" title="Debe ingresar una imagen" required>
+                          </div>
+                      </div>
+                    
+                     
+              
+              </div>
+            </div>
+            <div class="row justify-content-end" style="padding-top: 20px;">
+              <div class="col-12 col-md-2 offset-md-3">Opciones</div>
+                  <div class="col-12 col-md-5">
+                      <input type="submit" name="btnGuardar" class="btn btn-danger" value="Guardar">
+                      <a href="{% url 'registroProducto' %}" class="btn btn-outline-secondary" value="Limpiar">Limpiar</a>
+                      <a href="{% url 'listarProducto' %}" class="btn btn-success">Listar</a>
+                  </div>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+{% endblock %}
+
+

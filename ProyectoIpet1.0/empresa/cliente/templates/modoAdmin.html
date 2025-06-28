@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FerremasAdmin</title>
+    {% block links %}
+    <link rel="icon" href="{% static 'cliente/images/favicon.ico' %}" alt="Logo">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script rel="stylesheet" href="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/rwd.table.min.css">
+    <link rel="stylesheet" href="{% static 'cliente/model/css/styleNavbar.css' %}">
+    <link rel="stylesheet" href="{% static 'cliente/model/css/stylegeneralmovil.css' %}">
+    <link rel="stylesheet" href="{% static 'cliente/model/css/styleRegistro.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+     
+      
+      .table-bordered {
+        border: 1px solid #ddd !important;
+      }
+      
+      table caption {
+        padding: .5em 0;
+      }
+      
+      @media screen and (max-width: 767px) {
+        table caption {
+          display: none;
+        }
+      }
+      
+      .p {
+        text-align: center;
+        padding-top: 140px;
+        font-size: 14px;
+      }
+      
+    </style>
+    {% endblock %}
+</head>
+<body>
+    {% block navbar %}
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: var(--navbar-color);">
+      <div class="container-fluid">
+        <a class="navbar-brand no-transition" href="{% url 'modoAdmin' %}">
+          <div class="d-flex align-items-center">
+            <div>
+              <h2>Ferremas</h2>
+            </div>
+          </div>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav">
+                <div id="divdropdown" class="d-flex">
+                  <li class="nav-item">
+                    <a class="nav-link"  href="{% url 'listarUsuario' %}" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Usuarios</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Pedidos</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Productos</a>
+                    <ul class="dropdown-menu" style="background-color: var(--navbar-color);">
+                      <li><a class="dropdown-item" href="{% url 'listarProducto' %}" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Listar Productos</a></li>
+                      <li><a class="dropdown-item" href="{% url 'listarCategoria' %}" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Listar Categorias</a></li>
+                      <li><a class="dropdown-item" href="{% url 'listarMarca' %}" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Listar Marcas</a></li>
+                      <li><a class="dropdown-item" href="{% url 'listarFormaDePago' %}" style="font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;">Listar Forma De Pago</a></li>
+                  </li>
+                
+                </div>
+              </ul>
+              <div class="navbar-nav ms-auto">
+                <a id="iconcar" class="nav-link d-md-block" style="padding-top: 13px; padding-right: 25px; height: 38px;" href="{% url 'index' %}">
+                  <i class="fas fa-home" style="color: white;" ></i>
+                </a>
+                <div class="d-flex" style="position: relative;"> 
+
+                  <div class="sec-center"> 	
+                    <input class="dropdown" type="checkbox" id="dropdown" name="dropdown"/>
+                    <label class="for-dropdown dropdown" for="dropdown">
+                        <a class="dropdown-toggle nav-link">
+                          <img src="{% static 'cliente/images/USUARIOSINFOTO.jpeg' %}" class="rounded-circle" alt="Foto de perfil" width="30" height="30">
+                        </a>
+                      <i class="uil uil-arrow-down"></i></label>
+                    <div class="section-dropdown text-center">
+                      <img src="{% static 'cliente/images/USUARIOSINFOTO.jpeg' %}" class="rounded-circle mb-4" alt="Foto de perfil" width="100" height="100">
+                      <p>{{ user.email }}</p>
+                      <p>{{ user.first_name }} {{ user.last_name }}</p>                                
+                      <form method="POST" action="{% url 'logout' %}" style="display: flex; flex-direction: column;">
+                        {% csrf_token %}
+                          <button class="nav-link d-md-block btn btn-danger btn-rounded " style="background-color: red; color: white;">Cerrar Sesion</button>
+                      </form>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </div>
+  </nav>
+  {% endblock %}
+  {% block contenido %}
+    <div class="container mt-5 pt-5">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="bg-secondary text-white p-4 rounded text-center">
+                    <h1>Bienvenido al Panel de Administración</h1>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Ventas Totales</h5>
+                        <p class="card-text">$12,345</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Productos Vendidos</h5>
+                        <p class="card-text">678</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <h5 class="card-title">Ganancias</h5>
+                        <p class="card-text">$8,912</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-4">
+          <div class="col-12">
+              <div class="card bg-light">
+                  <div class="card-body">
+                      <h2 class="card-title text-center">Gráfico de Ventas</h2>
+                      <canvas id="ventasChart" style="max-width: 600px; margin: 0 auto;"></canvas>
+                  </div>
+              </div>
+          </div>
+        </div>
+        
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title text-center">Últimas Actividades</h2>
+                        <ul class="list-group">
+                            <li class="list-group-item">Venta de 10 unidades de Producto A - Ganancia: $200</li>
+                            <li class="list-group-item">Nuevo producto añadido: Producto B</li>
+                            <li class="list-group-item">Venta de 5 unidades de Producto C - Ganancia: $150</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    
+
+
+
+    
+    <div class="container">
+      <h1 class="text-center" style="padding-top: 80px; padding-bottom: 15px">{% block tituloPrincipal %}{% endblock %}</h1>
+      {% block mensaje    %}{% endblock %}
+      {% block contenidoTabla    %}{% endblock %}
+      <div class="container">{% block listado %}{% endblock %}</div>
+      
+    </div>
+
+    
+    {% block scriptsjs %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="{% static 'cliente/model/js/script.js' %}"></script>
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/rwd-table-patterns.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          var ctx = document.getElementById('ventasChart').getContext('2d');
+          var chart = new Chart(ctx, {
+              type: 'line',
+              
+              data: {
+                  labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio'],
+                  datasets: [{
+                      label: 'Ventas',
+                      backgroundColor: 'green',
+                      borderColor: 'green',
+                      data: [0, 10, 5, 2, 20, 30, 45]
+                  }]
+              },
+              
+              options: {}
+          });
+      });
+  </script>
+    {% endblock%}
+
+
+   
+      
+</body>
+</html>

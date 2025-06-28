@@ -1,0 +1,229 @@
+
+{% extends "modoAdmin.html" %}
+{% load static %}
+
+{% block contenido %}
+{% endblock %}
+
+{% block tituloPrincipal %} Registro de Usuarios {% endblock %}
+
+{% block mensaje%}
+
+{% if exito %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">  
+        {{exito}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+
+{% if error %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{error}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+{% endif %}
+
+{% endblock %}
+
+{% block contenidoTabla  %}
+
+
+
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-8 ml-auto" >
+      <form action="{% url 'guardarUsuario' %}" method="POST" enctype="multipart/form-data" >
+        <div style="overflow-x: hidden; overflow-y: auto; height: 65vh;">            
+          {% csrf_token %}
+            <div class="row">
+                    <!-- Rut -->
+                    <div class="mb-4">
+                      <p>Rut:</p>
+                      <div class="input-group">
+                          <span class="input-group-text"><i class="fa fa-id-card text-muted" style="width: 15px;"></i></span>
+                          <input type="hidden" name="txtId" value="{{item.id}}">
+                          <input type="hidden" name="origen" value="admin">
+                          <input id="rutInput" type="text" name="txtRut" class="form-control bg-white border-left-0 border-md" pattern="^\d{7,8}-[\dKk]{1}$" title="Por favor, ingresa el RUT sin puntos y con guión. Ejemplo: 12345678-9" required placeholder="XXXXXXXX-X" value="{{item.rut}}">
+                      </div>
+                      <p id="rutError" style="color: red; display: none;">El RUT ingresado no es válido.</p>
+                    </div>
+                  
+                    <!-- Email -->
+                    <div class="mb-4">
+                      <p>Email:</p>
+                      <div class="input-group">
+                          <span class="input-group-text"><i class="fa fa-envelope text-muted" style="width: 15px;"></i></span>
+                          <input type="email" name="txtCorreo" class="form-control bg-white border-left-0 border-md" pattern=".+@.+\..+$" title="Por favor, ingresa un correo válido. Ejemplo: ejemplo@correo.com" required placeholder="ejemplo@correo.com" value="{{item.email}}">
+      
+                        </div>
+                    </div>
+                  
+                    <!-- Primer Nombre -->
+                    <div class="mb-4">
+                      <p>Primer Nombre:</p>
+                      <div class="input-group">
+                          <span class="input-group-text"><i class="fa fa-user text-muted" style="width: 15px;"></i></span>
+                          <input type="text" name="txtNombre" class="form-control bg-white border-left-0 border-md" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$" title="Por favor, ingresa solo letras." required placeholder="Pedro" value="{{item.first_name}}">
+      
+                      </div>
+                    </div>
+                  
+                    <!-- Apellidos-->
+                    <div class="mb-4">
+                      <p>Primer Apellido:</p>
+                      <div class="input-group">
+                          <span class="input-group-text"><i class="fa fa-user text-muted" style="width: 15px;"></i></span>
+                          <input type="text" name="txtApellido" class="form-control bg-white border-left-0 border-md" pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$" title="Por favor, ingresa solo letras." required placeholder="Pascal" value="{{item.last_name}}">
+      
+                        </div>
+                    </div>
+                  
+                    <!-- Contraseña-->
+                    <div class="mb-4">
+                      <p>Contraseña:</p>
+                      <div class="input-group">
+                          <span class="input-group-text"><i class="fa fa-lock text-muted" style="width: 15px;"></i></span>
+                          <input type="text" name="txtContrasena" class="form-control bg-white border-left-0 border-md" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}" title="La contraseña debe contener al menos 8 carácteres, un carácter especial, una letra mayúscula, una letra minúscula y un número." required placeholder="Xx1234567@">
+      
+                        </div>
+                    </div>
+                  
+                  
+                    <!-- Fecha de Nacimiento -->
+                    <div class="mb-4">
+                      <p>Fecha de Nacimiento:</p>
+                      <div class="input-group">
+                          <span class="input-group-text"><i class="fa fa-calendar text-muted" style="width: 15px;"></i></span>
+                          <input type="date" name="txtFecha" class="form-control bg-white border-left-0 border-md" value="{{item.fecha_de_nacimiento|date:'Y-m-d'}}" title="Debe ingresar una fecha válida." required>
+      
+                        </div>
+                    </div>
+                  
+                  
+                    <!-- Telefono -->
+                    <div class="mb-4">
+                      <p>Telefono:</p>
+                      <div class="input-group">
+                          <span class="input-group-text"><i class="fa fa-phone-square text-muted" style="width: 15px;"></i></span>
+                          <input type="text" name="txtTelefono" class="form-control bg-white border-left-0 border-md" value="{{item.telefono}}" title="Debe ingresar un telefono de al menos 8 dígitos (9XXXXXXXX)." placeholder="XXXXXXXXX" pattern="\d{8,}" required>
+      
+                        </div>
+                    </div>
+                  
+                    <!-- Direccion -->
+                    <div class="mb-4">
+                      <p>Direccion:</p>
+                      <div class="input-group">
+                          <span class="input-group-text"><i class="fa fa-location-arrow text-muted" style="width: 15px;"></i></span>
+                          <input type="text" name="txtDireccion" class="form-control bg-white border-left-0 border-md" required placeholder="Introduce tu dirección." value="{{item.direccion}}">
+      
+                        </div>
+                    </div>
+                  
+                    <!-- Es Admin -->
+                    <div class="mb-4">
+                      <p>¿Es administrador?</p>
+                      <div class="input-group">
+                        <input type="checkbox" name="chkEsAdmin" value="true" {% if item.is_staff %}checked{% endif %}>
+                        <label for="chkEsAdmin" style="padding-left: 30px;">Marcar si el usuario es administrador</label>
+                      </div>
+                    </div>
+
+                    <!-- Region -->
+                    <div class="mb-4">
+                      <p>Region:</p>
+                      <div class="input-group">
+                          <span class="input-group-text"><i class="fa fa-map-marker text-muted" style="width: 15px;"></i></span>
+                          <select type="text" name="txtRegion" class="form-select custom-select bg-white border-left-0 border-md" value="{{item.region}}" required>
+      
+                            <option value="">- Selecciona una región -</option>
+                            <option value="Región de Arica y Parinacota" {% if item.region == "Región de Arica y Parinacota" %}selected{% endif %}>Región de Arica y Parinacota</option>
+                            <option value="Región de Tarapacá" {% if item.region == "Región de Tarapacá" %}selected{% endif %}>Región de Tarapacá</option>
+                            <option value="Región de Antofagasta" {% if item.region == "Región de Antofagasta" %}selected{% endif %}>Región de Antofagasta</option>
+                            <option value="Región de Atacama" {% if item.region == "Región de Atacama" %}selected{% endif %}>Región de Atacama</option>
+                            <option value="Región de Coquimbo" {% if item.region == "Región de Coquimbo" %}selected{% endif %}>Región de Coquimbo</option>
+                            <option value="Región de Valparaíso" {% if item.region == "Región de Valparaíso" %}selected{% endif %}>Región de Valparaíso</option>
+                            <option value="Región Metropolitana de Santiago" {% if item.region == "Región Metropolitana de Santiago" %}selected{% endif %}>Región Metropolitana de Santiago</option>
+                            <option value="Región del Libertador General Bernardo O'Higgins" {% if item.region == "Región del Libertador General Bernardo O'Higgins" %}selected{% endif %}>Región del Libertador General Bernardo O'Higgins</option>
+                            <option value="Región del Maule" {% if item.region == "Región del Maule" %}selected{% endif %}>Región del Maule</option>
+                            <option value="Región de Ñuble" {% if item.region == "Región de Ñuble" %}selected{% endif %}>Región de Ñuble</option>
+                            <option value="Región del Biobío" {% if item.region == "Región del Biobío" %}selected{% endif %}>Región del Biobío</option>
+                            <option value="Región de La Araucanía" {% if item.region == "Región de La Araucanía" %}selected{% endif %}>Región de La Araucanía</option>
+                            <option value="Región de Los Ríos" {% if item.region == "Región de Los Ríos" %}selected{% endif %}>Región de Los Ríos</option>
+                            <option value="Región de Los Lagos" {% if item.region == "Región de Los Lagos" %}selected{% endif %}>Región de Los Lagos</option>
+                            <option value="Región de Aysén del General Carlos Ibáñez del Campo" {% if item.region == "Región de Aysén del General Carlos Ibáñez del Campo" %}selected{% endif %}>Región de Aysén del General Carlos Ibáñez del Campo</option>
+                            <option value="Región de Magallanes y de la Antártica Chilena" {% if item.region == "Región de Magallanes y de la Antártica Chilena" %}selected{% endif %}>Región de Magallanes y de la Antártica Chilena</option>
+                        </select>                      
+                      </div>
+                    </div>
+                  
+                    <!-- Nivel Educacional -->
+                    <div class="mb-4">
+                      <p>Nivel Educacional:</p>
+                      <div class="input-group">
+                          <span class="input-group-text"><i class="fa fa-graduation-cap text-muted" style="width: 15px;"></i></span>
+                          <select type="text" name="txtNivel_Educacional" class="form-select custom-select bg-white border-left-0 border-md" value="{{item.nivel_educacional}}" required placeholder="Debes seleccionar un nivel educacional.">
+      
+                            <option value="">- Selecciona un nivel educacional -</option>
+                            <option value="Primer ciclo" {% if item.nivel_educacional == "Primer ciclo" %}selected{% endif %}>Primer ciclo</option>
+                            <option value="Segundo ciclo" {% if item.nivel_educacional == "Segundo ciclo" %}selected{% endif %}>Segundo ciclo</option>
+                            <option value="Técnico" {% if item.nivel_educacional == "Técnico" %}selected{% endif %}>Técnico</option>
+                            <option value="Profesional" {% if item.nivel_educacional == "Profesional" %}selected{% endif %}>Profesional</option>
+                            <option value="Sin estudios" {% if item.nivel_educacional == "Sin estudios" %}selected{% endif %}>Sin estudios</option>
+                        </select>                      
+                      </div>
+                    </div>
+            </div>
+            
+            
+          </div>
+          <div class="row justify-content-end" style="padding-top: 20px;">
+                <div class="col-12 col-md-2 offset-md-3">Opciones</div>
+                <div class="col-12 col-md-5">
+                    <input type="submit" name="btnGuardar" class="btn btn-danger" value="Guardar">
+                    <a href="{% url 'registroUsuario' %}" class="btn btn-outline-secondary" value="Limpiar">Limpiar</a>
+                    <a href="{% url 'listarUsuario' %}" class="btn btn-success">Listar</a>
+                </div>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+    
+
+<script>
+  document.getElementById('rutInput').addEventListener('input', function() {
+    var rut = this.value;
+    if (!validar_rut(rut)) {
+        document.getElementById('rutError').style.display = 'block';
+    } else {
+        document.getElementById('rutError').style.display = 'none';
+    }
+});
+
+function validar_rut(rut) {
+    rut = rut.replace("-", "");
+    var cuerpo = rut.slice(0, -1);
+    var dv = rut.slice(-1).toUpperCase();
+
+    var reversa = Array.from(cuerpo).reverse().map(Number);
+    var factor = 2;
+    var suma = 0;
+    for (var d of reversa) {
+        suma += d * factor;
+        factor = factor == 7 ? 2 : factor + 1;
+    }
+
+    var resto = suma % 11;
+    var dv_calculado = resto == 0 ? '0' : resto == 1 ? 'K' : String(11 - resto);
+
+    return dv == dv_calculado;
+}
+</script>
+
+{% endblock %}
+
+
+
+

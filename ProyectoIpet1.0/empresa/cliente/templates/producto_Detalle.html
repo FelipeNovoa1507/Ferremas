@@ -1,0 +1,239 @@
+{% extends "master.html" %}
+{% load static %}
+{% load filters %}
+{% load mathfilters %}
+{% block switch %}
+{% endblock %}
+{% block contenido %}
+
+
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation-flex.min.css">
+    <link rel="stylesheet" href="{% static 'cliente/model/css/styleProducto.css' %}">
+        <main class="main">
+            <div class="mainWrapper">
+                <div class="mainBackground clearfix">
+                    <div class="row">
+                        <div class="column small-centered">
+                            <div class="productCard_block">
+                                <div class="row">
+                                    <div class="small-12 large-6 columns">
+                                        <div class="productCard_leftSide clearfix">
+                                            <div class="productCard_brendBlock" style="border-radius: .7rem;">
+                                                <a class="productCard_brendBlock__imageBlock" href="#" style="color: white; text-align: center; padding-top: 18px;">
+                                                    <h4>{{ producto.marca }}</h4>
+                                                </a>
+                                            </div>
+                                            <div class="sliderBlock">
+                                                <ul class="sliderBlock_items">
+                                                    <li class="sliderBlock_items__itemPhoto sliderBlock_items__showing">
+                                                        <img src="{% static producto.imagen.url %}" alt="{{ producto.nombre }}">
+                                                    </li>
+                                                </ul>
+                                                <div class="sliderBlock_controls">
+                                                    <div class="sliderBlock_controls__navigatin">
+                                                        <div class="sliderBlock_controls__wrapper">
+                                                            <div class="sliderBlock_controls__arrow sliderBlock_controls__arrowBackward">
+                                                                <i class="fa fa-angle-left" aria-hidden="true"></i>
+                                                            </div>
+                                                            <div class="sliderBlock_controls__arrow sliderBlock_controls__arrowForward">
+                                                                <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <ul class="sliderBlock_positionControls">
+                                                        <li class="sliderBlock_positionControls__paginatorItem sliderBlock_positionControls__active"></li>
+                                                        <li class="sliderBlock_positionControls__paginatorItem"></li>
+                                                        <li class="sliderBlock_positionControls__paginatorItem"></li>
+                                                        <li class="sliderBlock_positionControls__paginatorItem"></li>
+                                                        <li class="sliderBlock_positionControls__paginatorItem"></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="small-12 large-6 columns">
+                                        <div class="productCard_rightSide">
+                                            <div class="block_specification">
+                                                <div class="block_specification__informationShow hide">
+                                                    <i class="fa fa-info-circle block_specification__button block_specification__button__jump" aria-hidden="true"></i>
+                                                    <span class="block_specification__text">inform</span>
+                                                </div>
+                                            </div>
+                                            <p class="block_model">
+                                                <span class="block_model__text">Modelo: </span>
+                                                <span class="block_model__number">{{producto.modelo}}</span>
+                                            </p>
+                                            <div class="block_product">
+                                                <h2 class="block_name block_name__mainName">MOMENTUM<sup>&reg; </sup></h2>
+                                                <h2 class="block_name block_name__addName">{{ producto.nombre }}</h2>
+                                                <p class="block_product__advantagesProduct" style="width: 380px;">{{producto.categoria}}</p>
+                                                <div class="block_informationAboutDevice">
+                                                    <div class="block_descriptionInformation" style="width: 380px;">
+                                                        <span>{{ producto.descripcion }}</span>
+                                                    </div>
+        
+                                                    <div class="block_rating clearfix">
+                                                        <fieldset class="block_rating__stars">
+                                                            <input type="radio" id="star5" name="rating" value="5"/><label class="full" for="star5" title="Awesome - 5 stars"></label>
+                                                            <input type="radio" id="star4half" name="rating" value="4 and a half"/><label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                                                            <input type="radio" id="star4" name="rating" value="4"/><label class="full" for="star4" title="Good - 4 stars"></label>
+                                                            <input type="radio" id="star3half" name="rating" value="3 and a half"/><label class="half" for="star3half" title="Above average - 3.5 stars"></label>
+                                                            <input type="radio" id="star3" name="rating" value="3"/><label class="full" for="star3" title="Average - 3 stars"></label>
+                                                            <input type="radio" id="star2half" name="rating" value="2 and a half"/><label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                                                            <input type="radio" id="star2" name="rating" value="2"/><label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                                                            <input type="radio" id="star1half" name="rating" value="1 and a half"/><label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                                                            <input type="radio" id="star1" name="rating" value="1"/><label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                                                            <input type="radio" id="starhalf" name="rating" value="half"/><label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                                                        </fieldset>
+        
+                                                        <span class="block_rating__avarage">4.25</span>
+                                                        <span class="block_rating__reviews">(153 reviews)</span>
+        
+                                                    </div>
+                                                    <div class="row ">
+                                                        <div class="large-6 small-12 column ms-auto">
+                                                            <div class="block_price ml-auto">
+                                                                <p class="block_price__currency">${{ producto.precio|format_price }} CLP</p>
+                                                                <p class="block_price__shipping">Envío se cobra por separado</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="block_quantity clearfix d-flex" >
+                                                            <span class="text_specification">Cantidad</span>
+                                                            <div class="block_quantity__chooseBlock">
+                                                                <input id="cantidad" class="block_quantity__number" name="quantityNumber" type="text" min="1" value="1">
+                                                                <button class="block_quantity__button block_quantity__up"></button>
+                                                                <button class="block_quantity__button block_quantity__down"></button>
+                                                            </div>
+                                                            <div class="large-6 small-12 column end">
+                                                                <a id="agregar-carrito" href="{% url 'gestionarCarrito' 'agregar' producto.id 'carrito' %}"><button class="button button_addToCard">Añadir al Carrito</button></a>                                                                    
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </main>
+    <script>
+        $(document).ready(function() {
+            $('#agregar-carrito').on('click', function(event) {
+                event.preventDefault();
+                var cantidad = $('#cantidad').val();
+                var url = $(this).attr('href') + '?cantidad=' + cantidad;
+                window.location.href = url;
+            });
+        });
+
+
+        window.onload = function () {
+
+          
+            var slider = document.getElementsByClassName("sliderBlock_items");
+            var slides = document.getElementsByClassName("sliderBlock_items__itemPhoto");
+            var next = document.getElementsByClassName("sliderBlock_controls__arrowForward")[0];
+            var previous = document.getElementsByClassName("sliderBlock_controls__arrowBackward")[0];
+            var items = document.getElementsByClassName("sliderBlock_positionControls")[0];
+            var currentSlideItem = document.getElementsByClassName("sliderBlock_positionControls__paginatorItem");
+
+            var currentSlide = 0;
+            var slideInterval = setInterval(nextSlide, 5000); 
+
+            function nextSlide() {
+                goToSlide(currentSlide + 1);
+            }
+
+            function previousSlide() {
+                goToSlide(currentSlide - 1);
+            }
+
+
+            function goToSlide(n) {
+                slides[currentSlide].className = 'sliderBlock_items__itemPhoto';
+                items.children[currentSlide].className = 'sliderBlock_positionControls__paginatorItem';
+                currentSlide = (n + slides.length) % slides.length;
+                slides[currentSlide].className = 'sliderBlock_items__itemPhoto sliderBlock_items__showing';
+                items.children[currentSlide].className = 'sliderBlock_positionControls__paginatorItem sliderBlock_positionControls__active';
+            }
+
+
+            next.onclick = function () {
+                nextSlide();
+            };
+            previous.onclick = function () {
+                previousSlide();
+            };
+
+
+            function goToSlideAfterPushTheMiniBlock() {
+                for (var i = 0; i < currentSlideItem.length; i++) {
+                    currentSlideItem[i].onclick = function (i) {
+                        var index = Array.prototype.indexOf.call(currentSlideItem, this);
+                        goToSlide(index);
+                    }
+                }
+            }
+
+            goToSlideAfterPushTheMiniBlock();
+
+
+
+
+            var buttonFullSpecification = document.getElementsByClassName("block_specification")[0];
+            var buttonSpecification = document.getElementsByClassName("block_specification__specificationShow")[0];
+            var buttonInformation = document.getElementsByClassName("block_specification__informationShow")[0];
+
+            var blockCharacteristiic = document.querySelector(".block_descriptionCharacteristic");
+            var activeCharacteristic = document.querySelector(".block_descriptionCharacteristic__active");
+
+
+            buttonFullSpecification.onclick = function () {
+
+                console.log("OK");
+
+
+                buttonSpecification.classList.toggle("hide");
+                buttonInformation.classList.toggle("hide");
+
+
+                blockCharacteristiic.classList.toggle("block_descriptionCharacteristic__active");
+
+
+            };
+
+
+        /////  QUANTITY ITEMS
+
+            var up = document.getElementsByClassName('block_quantity__up')[0],
+                down = document.getElementsByClassName('block_quantity__down')[0],
+                input = document.getElementsByClassName('block_quantity__number')[0];
+
+            function getValue() {
+                return parseInt(input.value);
+            }
+
+            up.onclick = function (event) {
+                input.value = getValue() + 1;
+            };
+            down.onclick = function (event) {
+                if (input.value <= 1) {
+                    return 1;
+                } else {
+                    input.value = getValue() - 1;
+                }
+
+            }
+
+
+        };
+    </script>
+
+{% endblock %}

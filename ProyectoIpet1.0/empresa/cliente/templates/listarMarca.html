@@ -1,0 +1,61 @@
+{% extends "modoAdmin.html"%}
+{% load static %}
+{% block tituloPrincipal %} Marca {% endblock %}
+{% block mensaje    %}
+    {% if exito %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{exito}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+    {% if error %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{error}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block contenido %}
+{% endblock %}
+{% block listado %}
+
+
+
+        <div class="container">
+            <div class="row">
+              <div class="col-12">
+                <div class="table-responsive"  style="overflow-y: auto; height: 65vh;" data-pattern="priority-columns">
+                  <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Nombre</th>
+                            <th>Activo</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
+
+                     
+                    </thead>
+                    <tbody>
+                        {% for item in listado  %}
+                            <tr>
+                                <td><div>{{ item.id }}</div></td>
+                                <td><div>{{ item.nombre }}</div></td>
+                                <td><div>{{ item.is_active }}</div></td>
+                                <td><div><a href="{% url 'gestionarMarca' pk=item.id accion='buscar' %}" class="btn btn-warning fas fa-edit"></a></div></td>
+                                <td><div><a href="{% url 'gestionarMarca' pk=item.id accion='eliminar' %}" class="btn btn-danger far fa-window-close"></a></div></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                    
+                  </table>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <div class="text-end" style="padding-bottom: 20px;">
+            <a href="{% url 'registroMarca' %}" class="btn btn-primary mt-auto">Ingresar</a>
+        </div>
+{% endblock %}

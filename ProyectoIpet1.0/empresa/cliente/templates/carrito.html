@@ -1,0 +1,224 @@
+{% extends "master.html" %}
+{% load static %}
+{% load filters %}
+{% load mathfilters %}
+{% block switch %}
+{% endblock %}
+{%block contenido%}
+    <link rel="stylesheet" href="{% static 'cliente/model/css/styleCarrito.css' %}">
+    <link rel="stylesheet" href="{% static 'cliente/model/css/stylePago.css' %}">
+    <div id="loles">
+      <div class="ccccard">
+        <div class="row" style="padding-top: 100px; padding-bottom: 10px;">
+            <div class="col-md-8 ccccart">
+                <div class="ccctitle">
+                    <div class="row">
+                        <div class="col-md-5"><h4><b>Carrito de compras</b></h4></div>
+                        <div class="col-md-6 align-self-center text-right text-muted">{{tot_cant}} Productos</div>
+                        <div class="col-md-1 text-right">
+                          <a href={% url 'gestionarCarrito' 'limpiar' %}><i class='fas fa-trash-alt' style=" color: black;"></i></a>
+                        </div>
+                    </div>
+                </div>    
+                <div style="overflow: auto; height: 45vh; scrollbar-width: none; padding-right: 10px;" id="jajalol">
+                    {% for id, producto in request.session.carrito.items %}
+                        <div class="row border-top border-bottom">
+                            <div class="row cccmain align-items-center">
+                                
+                                <div class="col-2"><img class="img-fluid" src="{{ producto.imagen }}" style="width: 10rem;"></div>                                
+                                <div class="col">
+                                    <div class="cccrow text-muted"><a href="{% url 'producto_detalle' producto.producto_id %}" style="text-decoration: none;">{{ producto.nombre }}</a></div>
+                                    <div class="cccrow"></div>
+                                </div>
+                                <div class="col">
+                                    <a href="{% url 'gestionarCarrito' 'restar' producto.producto_id  'carrito' %}" style="padding: 0 0.7vh; text-decoration: none;" class="ntm">-</a><a href="javascript:void(0);" class="border" style="text-decoration: none;">{{ producto.cantidad }}</a><a href="{% url 'gestionarCarrito' 'agregar' producto.producto_id 'carrito' %}" style="padding: 0 0.7vh; text-decoration: none;" class="ntm">+</a>
+                                </div>
+                                    <div class="col price"><a href="javascript:void(0);" style="text-decoration: none;">&dollar; {{ producto.precio_unitario|multiply:producto.cantidad|format_price }}</a></div>                              
+                                    <a href="{% url 'gestionarCarrito' 'eliminar' producto.producto_id  'carrito' %}" class="btn btn-close ntm" aria-label="Close"></a>                        
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="cccback-to-shop"><a href="index">&leftarrow; Volver a la Tienda</a><span class="text-muted"></span></div>
+            </div>
+            <div class="col-md-4 cccsummary">
+                <div><h5 style="margin-top: 4vh;"><b>Total</b></h5></div>
+                <hr style="margin-top: 1.25rem;">
+                <div class="row">
+                    <div class="col">{{tot_cant}} Productos</div>
+                    <div class="col text-right price"><a href="javascript:void(0);" style="text-decoration: none;">&dollar; {{total|format_price}}</a></div>                                
+                </div>
+                <form>
+                    <p class="mt-2">Envío</p>
+                    <select id="envio">
+                        <option value="0" class="text-muted">Retiro en Tienda &dollar; 0</option>
+                        <option value="3990" class="text-muted">Envío Estándar &dollar; 3.990</option>
+                        <option value="5990" class="text-muted">Envío Express &dollar; 5.990</option>
+                      </select>
+                    <p>Código Promocional</p>
+                    <input id="code" placeholder="Ingresa tu código">
+                </form>
+                <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                    <div class="col">Total a Pagar</div>
+                    <div class="col total-pagar price"><a href="javascript:void(0);" style="text-decoration: none;">&dollar; {{total|format_price}}</a></div>                                
+                </div>
+                <a href="{% url 'iniciar_pago' %}" class="cccbtn">Pagar</a>                
+            </div>
+        </div>
+        <script>
+          $(function() {
+            $('[data-toggle="tooltip"]').tooltip()
+          })
+        </script>
+        <div class="modal fade" id="modalPago" tabindex="-1" aria-labelledby="modalPagoLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header" >
+                <h5 class="modal-title" id="modalPagoLabel">Método de Pago</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body container py-5">
+                <div class="card-header">
+                  <div class="bg-white shadow-sm">
+                      <ul role="tablist" class="nav bg-light nav-pills rounded nav-fill mb-3">
+                          <li class="nav-item"> <a data-bs-toggle="pill" href="#credit-card" class="nav-link active "> <i class="fas fa-credit-card mr-2"></i> Débito/Crédito </a> </li>
+                          <li class="nav-item"> <a data-bs-toggle="pill" href="#paypal" class="nav-link "> <i class="fab fa-paypal mr-2"></i> Paypal </a> </li>
+                          <li class="nav-item"> <a data-bs-toggle="pill" href="#net-banking" class="nav-link "> <i class="fas fa-mobile-alt mr-2"></i> Pago Bancario</a> </li>
+                      </ul>
+                  </div>
+                  <!-- debito o credito -->
+                  <div class="tab-content">
+                      <div id="credit-card" class="tab-pane fade show active pt-3">
+                          <form role="form" onsubmit="event.preventDefault()">
+                              <div class="form-group"> <label for="username">
+                                      <h6>Propietario de la Tarjeta</h6>
+                                  </label> <input type="text" name="username" placeholder="Nombre del Propietario" required class="form-control "> </div>
+                              <div class="form-group"> <label for="cardNumber">
+                                      <h6>Número de la Tarjeta</h6>
+                                  </label>
+                                  <div class="input-group d-flex">
+                                    <input type="text" name="cardNumber" placeholder="Número de Tarjeta Válido" class="form-control " required>
+                                    <span class="input-group-text text-muted span-alineado"> 
+                                      <i class="fab fa-cc-visa mx-1" style="color: rgb(153, 153, 153);"></i> 
+                                      <i class="fab fa-cc-mastercard mx-1" style="color: rgb(153, 153, 153);"></i> 
+                                      <i class="fab fa-cc-amex mx-1" style="color: rgb(153, 153, 153);"></i> 
+                                    </span> 
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-sm-8">
+                                      <div class="form-group"> <label><span class="hidden-xs">
+                                                  <h6>Fecha de Expiración</h6>
+                                              </span></label>
+                                          <div class="input-group"> <input type="number" placeholder="MM" name="" class="form-control" required> <input type="number" placeholder="YY" name="" class="form-control" required> </div>
+                                      </div>
+                                  </div>
+                                  <div class="col-sm-4">
+                                      <div class="form-group mb-4"> <label data-toggle="tooltip" title="El código de 3 dígitos al reverso de tu tarjeta">
+                                              <h6>CVV <i class="fa fa-question-circle d-inline"></i></h6>
+                                          </label> <input type="text" required class="form-control"> </div>
+                                  </div>
+                              </div>
+                              <div class="card-footer"> <button type="button" class="subscribe btn btn-primary btn-block shadow-sm"> Confirmar Pago </button>
+                          </form>
+                      </div>
+                  </div>
+                  <!-- Paypal -->
+                  <div id="paypal" class="tab-pane fade pt-3">
+                      <h6 class="pb-2">Selecciona tu tipo de cuenta Paypal</h6>
+                      <div class="d-flex align-items-center">
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" type="radio" name="optradio" id="domestica" value="domestica" checked>
+                          <label class="form-check-label" for="domestica">Domestica</label>
+                        </div>
+                        <div class="form-check form-check-inline ml-5">
+                          <input class="form-check-input" type="radio" name="optradio" id="internacional" value="internacional">
+                          <label class="form-check-label" for="internacional">Internacional</label>
+                        </div>
+                      </div>                  
+                      <p> <button type="button" class="btn btn-primary "><i class="fab fa-paypal mr-2"></i> Iniciar Sesión en Paypal</button> </p>
+                      <p class="text-muted"> Nota: Luego de clickear el botón, serás dirigido a un servidor seguro para el pago. Luego de completar la transacción, serás redirigido de vuelta al carrito de compras para ver los detalles de tu orden.</p>
+                  </div> 
+                  <!-- bank transfer info -->
+                  <div id="net-banking" class="tab-pane fade pt-3">
+                      <div class="form-group "> <label for="Select Your Bank">
+                              <h6>Selecciona tu banco</h6>
+                          </label> <select class="form-control" id="ccmonth">
+                              <option value="" selected disabled>--Por favor, selecciona un banco--</option>
+                              <option>Banco Bice</option>
+                              <option>BBVA</option>
+                              <option>Banco Consorcio</option>
+                              <option>Banco de Chile - Edwards Citi</option>
+                              <option>Banco del Desarrollo</option>
+                              <option>Banco Estado</option>
+                              <option>Banco Falabella</option>
+                              <option>Banco Internacional</option>
+                              <option>Banco Itaú</option>
+                              <option>Banco Paris</option>
+                              <option>Banco Ripley</option>
+                              <option>Banco Santander - Banefe</option>
+                              <option>Bci - Tbanc - Nova</option>
+                              <option>Coopeuch</option>
+                              <option>Corpbanca</option>
+                              <option>Copec Pay</option>
+                              <option>HSBC Bank</option>
+                              <option>Los Héroes</option>
+                              <option>Mercado Pago Emisora S.A</option>
+                              <option>Scotiabank</option>
+                              <option>Scotiabank</option>
+                              <option>TAPP Caja Los Andes</option>
+                              <option>TENPO Prepago</option>
+                              <option>Transbank</option>
+                          </select> </div>
+                      <div class="form-group">
+                          <p> <button type="button" class="btn btn-primary "><i class="fas fa-mobile-alt mr-2"></i> Proceder al Pago</button> </p>
+                      </div>
+                      <p class="text-muted"> Nota: Luego de clickear el botón, serás dirigido a un servidor seguro para el pago. Luego de completar la transacción, serás redirigido de vuelta al carrito de compras para ver los detalles de tu orden.</p>
+                  </div>
+              </div> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            $(".ntm").click(function(event) {
+                event.preventDefault();
+        
+
+                var scrollPosition = $("#jajalol").scrollTop();
+        
+ 
+                var selectedEnvio = $('#envio').val();
+        
+                $.ajax({
+                    url: $(this).attr('href'),
+                    type: 'GET',
+                    success: function(data) {
+                        $("#loles").html(data);
+        
+
+                        $("#jajalol").scrollTop(scrollPosition);
+        
+                        $('#envio').val(selectedEnvio);
+                    }
+                });
+            });
+        });
+
+        
+
+        function formatNumber(num) {
+            return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.')
+        }
+        
+        document.getElementById('envio').addEventListener('change', function() {
+            var total = parseFloat({{ total|default:"0" }});
+            var envio = parseFloat(this.value);
+            var totalConEnvio = total + envio;
+            document.querySelector('.total-pagar a').textContent = '$ ' + formatNumber(totalConEnvio.toFixed(0));
+        });
+    </script>
+{%endblock%}
