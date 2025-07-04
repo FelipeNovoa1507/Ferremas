@@ -1,0 +1,50 @@
+{% extends "master.html" %}
+{% block switch%}
+{% endblock %}
+{% block lista%}
+{% endblock %}
+{% block carrito %}
+{% block info %}
+{% endblock %}
+{% endblock %}
+{% block contenido %}
+<div class="container" style="padding-top: 120px; min-height: 70vh;">
+    <div class="card mx-auto shadow-lg" style="max-width: 600px; padding: 2rem; border-radius: 15px;">
+        {% if response.status == "AUTHORIZED" %}
+            <h2 class="text-success text-center mb-4">✅ ¡Pago aprobado!</h2>
+            <p class="text-center">Gracias por tu compra. Aquí están los detalles:</p>
+        {% else %}
+            <h2 class="text-danger text-center mb-4">❌ Pago rechazado</h2>
+            <p class="text-center">Lo sentimos, tu transacción fue rechazada. Puedes intentar nuevamente.</p>
+        {% endif %}
+
+        <ul class="list-group list-group-flush mb-3">
+            <li class="list-group-item"><strong>Orden:</strong> {{ response.buy_order }}</li>
+            <li class="list-group-item"><strong>Monto:</strong> ${{ response.amount }}</li>
+            <li class="list-group-item"><strong>Estado:</strong> 
+                {% if response.status == "AUTHORIZED" %}
+                    Aprobado
+                {% elif response.status == "FAILED" %}
+                    Fallido
+                {% elif response.status == "REJECTED" %}
+                    Rechazado
+                {% elif response.status == "INITIALIZED" %}
+                    Inicializado
+                {% elif response.status == "ABANDONED" %}
+                    Abandonado
+                {% else %}
+                    Desconocido
+                {% endif %}
+            </li>
+        </ul>
+
+        <div class="text-center">
+            {% if response.status == "AUTHORIZED" %}
+                <a href="{% url 'index' %}" class="btn btn-primary mt-2">Volver al inicio</a>
+            {% else %}
+                <a href="{% url 'carrito' %}" class="btn btn-danger mt-2">Volver al carrito</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

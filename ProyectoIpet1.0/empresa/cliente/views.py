@@ -359,6 +359,7 @@ def guardarUsuario(request):
                 return render(request, 'registroUsuario.html', context)
             else:
                 return redirect('login')
+    return redirect('registroUsuario')
 
 
 @user_passes_test(es_admin, login_url='index')

@@ -1,18 +1,11 @@
-from transbank.webpay.webpay_plus.transaction import WebpayPlusTransaction as Transaction
+from transbank.webpay.webpay_plus.transaction import Transaction
+from transbank.common.options import WebpayOptions
+from transbank.common.integration_type import IntegrationType
 
-# Configuración para el ambiente de pruebas
-Transaction.commerce_code = "597055555532"
-Transaction.api_key = "597055555532"
-Transaction.environment = "TEST"  # Ambiente de pruebas
+options = WebpayOptions(
+    commerce_code="597055555532",
+    api_key="579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C",
+    integration_type=IntegrationType.TEST  # O puedes poner simplemente "TEST"
+)
 
-from django.shortcuts import render, redirect
-from .transbank_config import Transaction
-
-def iniciar_pago(request):
-    buy_order = "orden12345"  # Identificador único del pedido
-    session_id = "sesion12345"  # Identificador único de la sesión
-    amount = 10000  # Monto total de la compra
-    return_url = request.build_absolute_uri('/pagos/confirmar_pago/')  # URL de retorno
-
-    response = Transaction.create(buy_order, session_id, amount, return_url)
-    return redirect(response['url'] + '?token_ws=' + response['token'])
+transaction = Transaction(options)

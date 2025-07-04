@@ -1,0 +1,8 @@
+<!-- pagos/templates/pagos/redirect.html -->
+<form action="{{ url }}" method="POST" id="formulario-transbank">
+    <input type="hidden" name="token_ws" value="{{ token }}">
+</form>
+
+<script>
+    document.getElementById("formulario-transbank").submit();
+</script>

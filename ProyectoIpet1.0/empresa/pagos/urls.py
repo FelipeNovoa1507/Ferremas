@@ -1,9 +1,7 @@
-from django.contrib import admin
-from django.urls import path, include
-from . import views
+from django.urls import path
+from .views import iniciar_pago, confirmar_pago
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('iniciar/', views.iniciar_pago, name='iniciar_pago'),
-    path('respuesta/', views.respuesta_pago, name='respuesta_pago'),
-]
+    path('iniciar_pago/', iniciar_pago, name='iniciar_pago'),
+    path('confirmar_pago/', confirmar_pago, name='confirmar_pago'),
+    ]

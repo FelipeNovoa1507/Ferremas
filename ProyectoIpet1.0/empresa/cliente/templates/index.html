@@ -38,7 +38,12 @@
                                         <div class="bbb_category"><a href="javascript:void(0);">{{ producto.categoria }}</a></div>
                                         <div class="bbb_info clearfix">
                                             <div class="bbb_name"><a href="#product-{{ producto.id }}">{{ producto.nombre }}</a></div>
-                                            <div class="bbb_price price PRECIOA"><a href="javascript:void(0);">${{ producto.precio|format_price }} CLP</a></div>
+                                            {% if producto.precio_Oferta %}
+                                                <div class="product-old-price price" style="margin-top: 6px; color: red;"><del><a href="javascript:void(0);">${{ producto.precio|format_price }} CLP</a></del></div>
+                                                <div class="product-price "><a href="javascript:void(0);">${{ producto.precio_Oferta|format_price }} CLP</a></div>
+                                            {% else %}
+                                                <div class="bbb_price price PRECIOA"><a href="javascript:void(0);">${{ producto.precio|format_price }} CLP</a></div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <ul class="bbb_marks">

@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./ProyectoIpet1.0/empresa/nuevo_venv/lib/python3.10/site-packages"
+    ]
+}
